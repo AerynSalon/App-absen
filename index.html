@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Absensi Karyawan Salon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Absensi Karyawan Salon Cantika</h1>
+        <p>Aplikasi sederhana untuk mencatat kehadiran karyawan.</p>
+
+        <!-- Bagian Tambah Karyawan -->
+        <div class="card">
+            <h2>Manajemen Karyawan</h2>
+            <div class="form-group">
+                <input type="text" id="namaKaryawanBaru" placeholder="Masukkan nama karyawan baru">
+                <button id="btnTambahKaryawan">Tambah Karyawan</button>
+            </div>
+        </div>
+
+        <!-- Bagian Form Absensi -->
+        <div class="card">
+            <h2>Catat Absensi Hari Ini</h2>
+            <form id="formAbsensi">
+                <div class="form-group">
+                    <label for="pilihKaryawan">Pilih Karyawan:</label>
+                    <select id="pilihKaryawan" required>
+                        <option value="">-- Pilih Karyawan --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status Kehadiran:</label>
+                    <div class="status-options">
+                        <label><input type="radio" name="status" value="Hadir" checked> Hadir</label>
+                        <label><input type="radio" name="status" value="Izin"> Izin</label>
+                        <label><input type="radio" name="status" value="Sakit"> Sakit</label>
+                        <label><input type="radio" name="status" value="Alpha"> Alpha</label>
+                    </div>
+                </div>
+                <button type="submit">Catat Absensi</button>
+            </form>
+        </div>
+
+        <!-- Bagian Rekapitulasi -->
+        <div class="card">
+            <h2>Rekapitulasi Hari Ini</h2>
+            <div id="rekapContainer">
+                <!-- Rekapitulasi akan ditampilkan di sini oleh JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Bagian Log Absensi -->
+        <div class="card">
+            <h2>Log Absensi</h2>
+            <table id="tabelAbsensi">
+                <thead>
+                    <tr>
+                        <th>Nama Karyawan</th>
+                        <th>Tanggal</th>
+                        <th>Waktu</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyTabelAbsensi">
+                    <!-- Data absensi akan muncul di sini -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+/* Import font dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Reset dasar dan gaya body */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #5d5d5d;
+    margin-bottom: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #d13abd; /* Warna khas salon */
+}
+
+p {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #777;
+}
+
+/* Gaya untuk kartu (card) */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Gaya untuk form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+    background-color: #d13abd;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #b92a9f;
+}
+
+#btnTambahKaryawan {
+    margin-top: 10px;
+    background-color: #5c6bc0;
+}
+#btnTambahKaryawan:hover {
+    background-color: #4354b3;
+}
+
+/* Gaya untuk pilihan status radio button */
+.status-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.status-options label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+.status-options input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* Gaya untuk tabel log */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+thead {
+    background-color: #f9f9f9;
+}
+
+th {
+    font-weight: 600;
+}
+
+/* Gaya untuk status di tabel */
+.status-hadir { color: #28a745; font-weight: bold; }
+.status-izin { color: #17a2b8; font-weight: bold; }
+.status-sakit { color: #ffc107; font-weight: bold; }
+.status-alpha { color: #dc3545; font-weight: bold; }
+
+/* Gaya untuk rekapitulasi */
+#rekapContainer {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.rekap-item {
+    padding: 10px;
+}
+
+.rekap-item .count {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Media query untuk tampilan mobile */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+    .status-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
