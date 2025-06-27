@@ -9,7 +9,8 @@
 <body>
 
     <div class="container">
-        <h1>Absensi Karyawan Salon Cantika</h1>
+        <!-- PERUBAHAN NAMA SALON DI SINI -->
+        <h1>Absensi Karyawan Aeryn Salon</h1>
         <p>Aplikasi sederhana untuk mencatat kehadiran karyawan.</p>
 
         <!-- Bagian Tambah Karyawan -->
@@ -17,7 +18,6 @@
             <h2>Manajemen Karyawan</h2>
             <div class="form-group">
                 <input type="text" id="namaKaryawanBaru" placeholder="Masukkan nama karyawan baru">
-                <!-- PERUBAHAN DI SINI: Ditambahkan type="button" -->
                 <button type="button" id="btnTambahKaryawan">Tambah Karyawan</button>
             </div>
         </div>
@@ -53,27 +53,27 @@
             </div>
         </div>
         
-        <!-- KODE BARU -->
-<div class="card">
-    <div class="header-log">
-        <h2>Log Absensi</h2>
-        <!-- Tombol download ditambahkan di sini -->
-        <button type="button" id="btnDownloadLaporan" class="btn-secondary">Download Laporan (CSV)</button>
+        <!-- Bagian Log Absensi -->
+        <div class="card">
+            <div class="header-log">
+                <h2>Log Absensi</h2>
+                <button type="button" id="btnDownloadLaporan" class="btn-secondary">Download Laporan (CSV)</button>
+            </div>
+            <table id="tabelAbsensi">
+                <thead>
+                    <tr>
+                        <th>Nama Karyawan</th>
+                        <th>Tanggal</th>
+                        <th>Waktu</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyTabelAbsensi">
+                    <!-- Data absensi akan muncul di sini -->
+                </tbody>
+            </table>
+        </div>
     </div>
-    <table id="tabelAbsensi">
-        <thead>
-            <tr>
-                <th>Nama Karyawan</th>
-                <th>Tanggal</th>
-                <th>Waktu</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody id="bodyTabelAbsensi">
-            <!-- Data absensi akan muncul di sini -->
-        </tbody>
-    </table>
-</div>
 
     <script src="script.js"></script>
 </body>
