@@ -1,6 +1,8 @@
 // Menunggu sampai seluruh halaman HTML dimuat sebelum menjalankan skrip
 document.addEventListener('DOMContentLoaded', () => {
 
+    console.log('Aplikasi Absensi Dimuat. Script berjalan!'); // PENANDA 1
+
     // --- Inisialisasi Data & Elemen DOM ---
     
     // Mengambil elemen-elemen dari HTML yang akan kita gunakan
@@ -10,6 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const pilihKaryawanSelect = document.getElementById('pilihKaryawan');
     const bodyTabelAbsensi = document.getElementById('bodyTabelAbsensi');
     const rekapContainer = document.getElementById('rekapContainer');
+
+    // Pastikan semua elemen ditemukan
+    if (!btnTambahKaryawan) {
+        console.error('ERROR: Tombol dengan id "btnTambahKaryawan" tidak ditemukan!');
+    }
 
     // Data Karyawan (bisa dimulai dengan data contoh)
     let karyawan = [
@@ -27,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Fungsi untuk merender (menampilkan) daftar karyawan di dropdown.
      */
     function renderKaryawanDropdown() {
+        console.log('Fungsi renderKaryawanDropdown dijalankan.'); // PENANDA 4
         pilihKaryawanSelect.innerHTML = '<option value="">-- Pilih Karyawan --</option>'; // Reset dropdown
         karyawan.forEach(k => {
             const option = document.createElement('option');
@@ -34,32 +42,34 @@ document.addEventListener('DOMContentLoaded', () => {
             option.textContent = k.nama;
             pilihKaryawanSelect.appendChild(option);
         });
+        console.log('Dropdown telah di-update.');
     }
 
     /**
      * Fungsi untuk menambahkan karyawan baru.
      */
     function tambahKaryawan() {
-        const namaBaru = namaKaryawanBaruInput.value.trim(); // Ambil nama dan hapus spasi berlebih
+        console.log('Fungsi tambahKaryawan dijalankan!'); // PENANDA 3
+
+        const namaBaru = namaKaryawanBaruInput.value.trim();
+        console.log('Nama yang diinput:', namaBaru);
+
         if (namaBaru === '') {
             alert('Nama karyawan tidak boleh kosong!');
             return;
         }
 
-        // Buat objek karyawan baru
         const karyawanBaru = {
-            id: Date.now(), // Gunakan timestamp sebagai ID unik
+            id: Date.now(),
             nama: namaBaru
         };
 
-        // Tambahkan ke array karyawan
         karyawan.push(karyawanBaru);
+        console.log('Array karyawan sekarang:', karyawan);
         
-        // Kosongkan input field
         namaKaryawanBaruInput.value = '';
         
-        // Update tampilan dropdown
-        renderKaryawanDropdown();
+        renderKaryawanDropdown(); // Memanggil fungsi untuk update dropdown
         alert(`Karyawan "${namaBaru}" berhasil ditambahkan!`);
     }
 
@@ -67,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Fungsi untuk merender (menampilkan) tabel log absensi.
      */
     function renderTabelAbsensi() {
-        bodyTabelAbsensi.innerHTML = ''; // Kosongkan tabel sebelum diisi ulang
+        bodyTabelAbsensi.innerHTML = ''; 
 
         if (absensi.length === 0) {
             bodyTabelAbsensi.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada data absensi hari ini.</td></tr>';
@@ -75,17 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         absensi.forEach(absen => {
-            const tr = document.createElement('tr'); // Buat baris baru (table row)
-            
-            // Buat sel-sel tabel (table data)
+            const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${absen.namaKaryawan}</td>
                 <td>${absen.tanggal}</td>
                 <td>${absen.waktu}</td>
                 <td class="status-${absen.status.toLowerCase()}">${absen.status}</td>
             `;
-            
-            bodyTabelAbsensi.appendChild(tr); // Tambahkan baris ke dalam tabel
+            bodyTabelAbsensi.appendChild(tr);
         });
     }
 
@@ -93,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
      * Fungsi untuk menghitung dan menampilkan rekapitulasi.
      */
     function renderRekapitulasi() {
-        // Hitung jumlah untuk setiap status
         const rekap = {
             Hadir: absensi.filter(a => a.status === 'Hadir').length,
             Izin: absensi.filter(a => a.status === 'Izin').length,
@@ -101,83 +107,61 @@ document.addEventListener('DOMContentLoaded', () => {
             Alpha: absensi.filter(a => a.status === 'Alpha').length,
         };
 
-        // Tampilkan hasil perhitungan ke HTML
         rekapContainer.innerHTML = `
-            <div class="rekap-item">
-                <div class="count status-hadir">${rekap.Hadir}</div>
-                <div>Hadir</div>
-            </div>
-            <div class="rekap-item">
-                <div class="count status-izin">${rekap.Izin}</div>
-                <div>Izin</div>
-            </div>
-            <div class="rekap-item">
-                <div class="count status-sakit">${rekap.Sakit}</div>
-                <div>Sakit</div>
-            </div>
-            <div class="rekap-item">
-                <div class="count status-alpha">${rekap.Alpha}</div>
-                <div>Alpha</div>
-            </div>
+            <div class="rekap-item"><div class="count status-hadir">${rekap.Hadir}</div><div>Hadir</div></div>
+            <div class="rekap-item"><div class="count status-izin">${rekap.Izin}</div><div>Izin</div></div>
+            <div class="rekap-item"><div class="count status-sakit">${rekap.Sakit}</div><div>Sakit</div></div>
+            <div class="rekap-item"><div class="count status-alpha">${rekap.Alpha}</div><div>Alpha</div></div>
         `;
     }
 
     /**
      * Fungsi untuk menangani proses pencatatan absensi.
-     * @param {Event} event - Objek event dari form submission.
      */
     function catatAbsensi(event) {
-        event.preventDefault(); // Mencegah form mengirim data dan me-refresh halaman
+        event.preventDefault(); 
 
         const karyawanId = pilihKaryawanSelect.value;
-        const status terpilih = document.querySelector('input[name="status"]:checked').value;
+        const statusTerpilih = document.querySelector('input[name="status"]:checked').value;
 
-        // Validasi: pastikan karyawan dipilih
         if (karyawanId === '') {
             alert('Silakan pilih karyawan terlebih dahulu!');
             return;
         }
         
-        // Cari nama karyawan berdasarkan ID yang dipilih
         const karyawanTerpilih = karyawan.find(k => k.id == karyawanId);
-
-        // Dapatkan waktu saat ini
         const sekarang = new Date();
         
-        // Buat objek absensi baru
         const absenBaru = {
             idKaryawan: karyawanId,
             namaKaryawan: karyawanTerpilih.nama,
-            tanggal: sekarang.toLocaleDateString('id-ID'), // Format tanggal Indonesia
-            waktu: sekarang.toLocaleTimeString('id-ID'),   // Format waktu Indonesia
-            status: status terpilih
+            tanggal: sekarang.toLocaleDateString('id-ID'),
+            waktu: sekarang.toLocaleTimeString('id-ID'),
+            status: statusTerpilih
         };
 
-        // Tambahkan ke array absensi
         absensi.push(absenBaru);
         
-        // Update tampilan tabel dan rekapitulasi
         renderTabelAbsensi();
         renderRekapitulasi();
 
-        // Reset form setelah submit
         formAbsensi.reset();
     }
 
     // --- Event Listeners ---
 
     // Menjalankan fungsi tambahKaryawan saat tombol diklik
-    btnTambahKaryawan.addEventListener('click', tambahKaryawan);
+    if (btnTambahKaryawan) {
+        console.log('Event listener untuk tombol Tambah Karyawan sedang ditambahkan.'); // PENANDA 2
+        btnTambahKaryawan.addEventListener('click', tambahKaryawan);
+    }
     
     // Menjalankan fungsi catatAbsensi saat form di-submit
     formAbsensi.addEventListener('submit', catatAbsensi);
 
-
     // --- Inisialisasi Aplikasi Saat Pertama Kali Dimuat ---
     
-    // Panggil fungsi-fungsi ini agar tampilan awal sudah siap
     renderKaryawanDropdown();
     renderTabelAbsensi();
     renderRekapitulasi();
-
 });
