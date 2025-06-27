@@ -1,193 +1,91 @@
-/* Import font dari Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+/* --- Tambahan untuk Fitur QR Code --- */
 
-/* Reset dasar dan gaya body */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* Gaya untuk Tombol Scan Utama */
+.btn-scan {
+    background-color: #28a745; /* Hijau */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 18px !important;
+    width: 100%;
+}
+.btn-scan:hover {
+    background-color: #218838;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-    line-height: 1.6;
-}
-
-.container {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
-}
-
-h1, h2 {
-    color: #5d5d5d;
-    margin-bottom: 10px;
-}
-
-h1 {
-    text-align: center;
-    color: #d13abd; /* Warna khas salon */
-}
-
-p {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #777;
-}
-
-/* Gaya untuk kartu (card) */
-.card {
-    background-color: #fff;
+/* Wadah Scanner */
+#qr-reader {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto 10px;
+    border: 2px solid #ddd;
     border-radius: 8px;
-    padding: 25px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Agar sudutnya rapi */
 }
 
-/* Gaya untuk form */
-.form-group {
-    margin-bottom: 15px;
+/* Kelas untuk menyembunyikan elemen */
+.hidden {
+    display: none !important;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
+/* Gaya untuk Modal (Pop-up) */
+.modal {
+    display: none; /* Sembunyi secara default */
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.6); 
 }
 
-input[type="text"], select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
 }
 
-button {
-    display: inline-block;
-    width: 100%;
-    padding: 12px;
-    background-color: #d13abd;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 600;
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #b92a9f;
-}
-
-#btnTambahKaryawan {
-    margin-top: 10px;
-    background-color: #5c6bc0;
-}
-#btnTambahKaryawan:hover {
-    background-color: #4354b3;
-}
-
-/* Gaya untuk pilihan status radio button */
-.status-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.status-options label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-weight: 400;
-}
-
-.status-options input[type="radio"] {
-    margin-right: 5px;
-}
-
-/* Gaya untuk tabel log */
-table {
-    width: 100%;
-    border-collapse: collapse;
+#qrCodeContainer {
     margin-top: 20px;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-thead {
-    background-color: #f9f9f9;
-}
-
-th {
-    font-weight: 600;
-}
-
-/* Gaya untuk status di tabel */
-.status-hadir { color: #28a745; font-weight: bold; }
-.status-izin { color: #17a2b8; font-weight: bold; }
-.status-sakit { color: #ffc107; font-weight: bold; }
-.status-alpha { color: #dc3545; font-weight: bold; }
-
-/* Gaya untuk rekapitulasi */
-#rekapContainer {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
     text-align: center;
-    flex-wrap: wrap;
 }
 
-.rekap-item {
+.qr-item {
     padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
 }
 
-.rekap-item .count {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-/* Media query untuk tampilan mobile */
-@media (max-width: 600px) {
-    .container {
-        padding: 10px;
-    }
-    .status-options {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-}
-
-/* --- Tambahan untuk Fitur Download --- */
-
-/* Membuat judul dan tombol sejajar */
-.header-log {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.header-log h2 {
-    margin-bottom: 0; /* Hapus margin bawah default dari h2 */
-}
-
-/* Gaya untuk tombol download (sekunder) */
-.btn-secondary {
-    background-color: #6c757d; /* Warna abu-abu netral */
-    padding: 8px 15px; /* Ukuran lebih kecil */
-    font-size: 14px;
-    width: auto; /* Lebar otomatis sesuai konten */
-}
-
-.btn-secondary:hover {
-    background-color: #5a6268;
+.qr-item img {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 10px;
+    display: block;
 }
