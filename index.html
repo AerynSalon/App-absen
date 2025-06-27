@@ -53,24 +53,27 @@
             </div>
         </div>
         
-        <!-- Bagian Log Absensi -->
-        <div class="card">
-            <h2>Log Absensi</h2>
-            <table id="tabelAbsensi">
-                <thead>
-                    <tr>
-                        <th>Nama Karyawan</th>
-                        <th>Tanggal</th>
-                        <th>Waktu</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="bodyTabelAbsensi">
-                    <!-- Data absensi akan muncul di sini -->
-                </tbody>
-            </table>
-        </div>
+        <!-- KODE BARU -->
+<div class="card">
+    <div class="header-log">
+        <h2>Log Absensi</h2>
+        <!-- Tombol download ditambahkan di sini -->
+        <button type="button" id="btnDownloadLaporan" class="btn-secondary">Download Laporan (CSV)</button>
     </div>
+    <table id="tabelAbsensi">
+        <thead>
+            <tr>
+                <th>Nama Karyawan</th>
+                <th>Tanggal</th>
+                <th>Waktu</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="bodyTabelAbsensi">
+            <!-- Data absensi akan muncul di sini -->
+        </tbody>
+    </table>
+</div>
 
     <script src="script.js"></script>
 </body>
