@@ -165,3 +165,29 @@ th {
         gap: 10px;
     }
 }
+
+/* --- Tambahan untuk Fitur Download --- */
+
+/* Membuat judul dan tombol sejajar */
+.header-log {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-log h2 {
+    margin-bottom: 0; /* Hapus margin bawah default dari h2 */
+}
+
+/* Gaya untuk tombol download (sekunder) */
+.btn-secondary {
+    background-color: #6c757d; /* Warna abu-abu netral */
+    padding: 8px 15px; /* Ukuran lebih kecil */
+    font-size: 14px;
+    width: auto; /* Lebar otomatis sesuai konten */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
