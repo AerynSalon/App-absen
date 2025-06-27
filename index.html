@@ -3,28 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Absensi Karyawan Salon</title>
+    <title>Aplikasi Absensi Aeryn Salon</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- BARU: Modal untuk menampilkan QR Code -->
+    <div id="modalQr" class="modal">
+        <div class="modal-content">
+            <span class="close-button">×</span>
+            <h2>Kode QR Karyawan</h2>
+            <p>Berikan QR Code ini kepada masing-masing karyawan. Mereka bisa menyimpannya di ponsel atau mencetaknya.</p>
+            <div id="qrCodeContainer">
+                <!-- QR Code akan digenerate di sini oleh JavaScript -->
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
-        <!-- PERUBAHAN NAMA SALON DI SINI -->
         <h1>Absensi Karyawan Aeryn Salon</h1>
         <p>Aplikasi sederhana untuk mencatat kehadiran karyawan.</p>
 
-        <!-- Bagian Tambah Karyawan -->
+        <!-- BARU: Bagian Scan QR Code -->
+        <div class="card">
+            <h2>Absen Cepat dengan Kamera</h2>
+            <div id="qr-scanner-section">
+                <button type="button" id="btnMulaiScan" class="btn-scan">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/qr-code.png" alt="qr icon" width="24">
+                    Scan QR Code untuk Absen
+                </button>
+                <!-- Wadah untuk kamera scanner -->
+                <div id="qr-reader" class="hidden"></div>
+                <button type="button" id="btnBatalScan" class="btn-secondary hidden">Batal Scan</button>
+            </div>
+        </div>
+
+        <!-- Bagian Manajemen Karyawan -->
         <div class="card">
             <h2>Manajemen Karyawan</h2>
             <div class="form-group">
                 <input type="text" id="namaKaryawanBaru" placeholder="Masukkan nama karyawan baru">
                 <button type="button" id="btnTambahKaryawan">Tambah Karyawan</button>
             </div>
+             <!-- Tombol untuk melihat QR Code -->
+            <button type="button" id="btnLihatQr" class="btn-secondary">Lihat Kode QR Karyawan</button>
         </div>
 
-        <!-- Bagian Form Absensi -->
+        <!-- Bagian Form Absensi Manual -->
         <div class="card">
-            <h2>Catat Absensi Hari Ini</h2>
+            <h2>Catat Absensi Manual</h2>
             <form id="formAbsensi">
                 <div class="form-group">
                     <label for="pilihKaryawan">Pilih Karyawan:</label>
@@ -44,16 +71,12 @@
                 <button type="submit">Catat Absensi</button>
             </form>
         </div>
-
-        <!-- Bagian Rekapitulasi -->
+        
+        <!-- Bagian Rekapitulasi & Log -->
         <div class="card">
             <h2>Rekapitulasi Hari Ini</h2>
-            <div id="rekapContainer">
-                <!-- Rekapitulasi akan ditampilkan di sini oleh JavaScript -->
-            </div>
+            <div id="rekapContainer"></div>
         </div>
-        
-        <!-- Bagian Log Absensi -->
         <div class="card">
             <div class="header-log">
                 <h2>Log Absensi</h2>
@@ -61,20 +84,15 @@
             </div>
             <table id="tabelAbsensi">
                 <thead>
-                    <tr>
-                        <th>Nama Karyawan</th>
-                        <th>Tanggal</th>
-                        <th>Waktu</th>
-                        <th>Status</th>
-                    </tr>
+                    <tr><th>Nama</th><th>Tanggal</th><th>Waktu</th><th>Status</th></tr>
                 </thead>
-                <tbody id="bodyTabelAbsensi">
-                    <!-- Data absensi akan muncul di sini -->
-                </tbody>
+                <tbody id="bodyTabelAbsensi"></tbody>
             </table>
         </div>
     </div>
 
+    <!-- BARU: Link ke library QR Scanner -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="script.js"></script>
 </body>
 </html>
