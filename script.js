@@ -1,89 +1,53 @@
-// Menunggu sampai seluruh halaman HTML dimuat sebelum menjalankan skrip
 document.addEventListener('DOMContentLoaded', () => {
 
-    console.log('Aplikasi Absensi Dimuat. Script berjalan!'); // PENANDA 1
-
     // --- Inisialisasi Data & Elemen DOM ---
-    
-    // Mengambil elemen-elemen dari HTML yang akan kita gunakan
     const btnTambahKaryawan = document.getElementById('btnTambahKaryawan');
     const namaKaryawanBaruInput = document.getElementById('namaKaryawanBaru');
     const formAbsensi = document.getElementById('formAbsensi');
     const pilihKaryawanSelect = document.getElementById('pilihKaryawan');
     const bodyTabelAbsensi = document.getElementById('bodyTabelAbsensi');
     const rekapContainer = document.getElementById('rekapContainer');
+    // BARU: Mengambil elemen tombol download
+    const btnDownloadLaporan = document.getElementById('btnDownloadLaporan');
 
-    // Pastikan semua elemen ditemukan
-    if (!btnTambahKaryawan) {
-        console.error('ERROR: Tombol dengan id "btnTambahKaryawan" tidak ditemukan!');
-    }
-
-    // Data Karyawan (bisa dimulai dengan data contoh)
     let karyawan = [
         { id: 1, nama: 'Bunga Citra' },
         { id: 2, nama: 'Dewi Lestari' },
         { id: 3, nama: 'Sari Puspita' }
     ];
-
-    // Data Absensi (akan diisi oleh pengguna)
     let absensi = [];
 
     // --- Fungsi-Fungsi Aplikasi ---
 
-    /**
-     * Fungsi untuk merender (menampilkan) daftar karyawan di dropdown.
-     */
     function renderKaryawanDropdown() {
-        console.log('Fungsi renderKaryawanDropdown dijalankan.'); // PENANDA 4
-        pilihKaryawanSelect.innerHTML = '<option value="">-- Pilih Karyawan --</option>'; // Reset dropdown
+        pilihKaryawanSelect.innerHTML = '<option value="">-- Pilih Karyawan --</option>';
         karyawan.forEach(k => {
             const option = document.createElement('option');
             option.value = k.id;
             option.textContent = k.nama;
             pilihKaryawanSelect.appendChild(option);
         });
-        console.log('Dropdown telah di-update.');
     }
 
-    /**
-     * Fungsi untuk menambahkan karyawan baru.
-     */
     function tambahKaryawan() {
-        console.log('Fungsi tambahKaryawan dijalankan!'); // PENANDA 3
-
         const namaBaru = namaKaryawanBaruInput.value.trim();
-        console.log('Nama yang diinput:', namaBaru);
-
         if (namaBaru === '') {
             alert('Nama karyawan tidak boleh kosong!');
             return;
         }
-
-        const karyawanBaru = {
-            id: Date.now(),
-            nama: namaBaru
-        };
-
+        const karyawanBaru = { id: Date.now(), nama: namaBaru };
         karyawan.push(karyawanBaru);
-        console.log('Array karyawan sekarang:', karyawan);
-        
         namaKaryawanBaruInput.value = '';
-        
-        renderKaryawanDropdown(); // Memanggil fungsi untuk update dropdown
+        renderKaryawanDropdown();
         alert(`Karyawan "${namaBaru}" berhasil ditambahkan!`);
     }
 
-    /**
-     * Fungsi untuk merender (menampilkan) tabel log absensi.
-     */
     function renderTabelAbsensi() {
-        bodyTabelAbsensi.innerHTML = ''; 
-
+        bodyTabelAbsensi.innerHTML = '';
         if (absensi.length === 0) {
             bodyTabelAbsensi.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada data absensi hari ini.</td></tr>';
             return;
         }
-
         absensi.forEach(absen => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -96,9 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Fungsi untuk menghitung dan menampilkan rekapitulasi.
-     */
     function renderRekapitulasi() {
         const rekap = {
             Hadir: absensi.filter(a => a.status === 'Hadir').length,
@@ -106,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
             Sakit: absensi.filter(a => a.status === 'Sakit').length,
             Alpha: absensi.filter(a => a.status === 'Alpha').length,
         };
-
         rekapContainer.innerHTML = `
             <div class="rekap-item"><div class="count status-hadir">${rekap.Hadir}</div><div>Hadir</div></div>
             <div class="rekap-item"><div class="count status-izin">${rekap.Izin}</div><div>Izin</div></div>
@@ -115,52 +75,76 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    /**
-     * Fungsi untuk menangani proses pencatatan absensi.
-     */
     function catatAbsensi(event) {
-        event.preventDefault(); 
-
+        event.preventDefault();
         const karyawanId = pilihKaryawanSelect.value;
         const statusTerpilih = document.querySelector('input[name="status"]:checked').value;
-
         if (karyawanId === '') {
             alert('Silakan pilih karyawan terlebih dahulu!');
             return;
         }
-        
         const karyawanTerpilih = karyawan.find(k => k.id == karyawanId);
         const sekarang = new Date();
-        
         const absenBaru = {
             idKaryawan: karyawanId,
             namaKaryawan: karyawanTerpilih.nama,
             tanggal: sekarang.toLocaleDateString('id-ID'),
-            waktu: sekarang.toLocaleTimeString('id-ID'),
+            waktu: sekarang.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
             status: statusTerpilih
         };
-
         absensi.push(absenBaru);
-        
         renderTabelAbsensi();
         renderRekapitulasi();
-
         formAbsensi.reset();
     }
 
-    // --- Event Listeners ---
+    // --- BARU: FUNGSI UNTUK DOWNLOAD LAPORAN ---
+    /**
+     * Mengubah data absensi menjadi format CSV dan mengunduhnya.
+     */
+    function downloadLaporan() {
+        if (absensi.length === 0) {
+            alert('Tidak ada data absensi untuk diunduh.');
+            return;
+        }
 
-    // Menjalankan fungsi tambahKaryawan saat tombol diklik
-    if (btnTambahKaryawan) {
-        console.log('Event listener untuk tombol Tambah Karyawan sedang ditambahkan.'); // PENANDA 2
-        btnTambahKaryawan.addEventListener('click', tambahKaryawan);
+        // 1. Buat header untuk file CSV
+        const header = ["Nama Karyawan", "Tanggal", "Waktu", "Status"];
+        
+        // 2. Ubah setiap objek absensi menjadi baris CSV
+        const rows = absensi.map(absen => 
+            [absen.namaKaryawan, absen.tanggal, absen.waktu, absen.status].join(',')
+        );
+
+        // 3. Gabungkan header dan semua baris data, dipisahkan oleh baris baru (\n)
+        const csvContent = [header.join(','), ...rows].join('\n');
+
+        // 4. Buat file virtual (Blob) dari konten CSV
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+        // 5. Buat link sementara untuk memicu download
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+
+        // 6. Tentukan nama file download
+        const tglHariIni = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
+        link.setAttribute("download", `laporan-absensi-salon-${tglHariIni}.csv`);
+        
+        // 7. Sembunyikan link, tambahkan ke halaman, klik, lalu hapus
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
-    
-    // Menjalankan fungsi catatAbsensi saat form di-submit
-    formAbsensi.addEventListener('submit', catatAbsensi);
 
-    // --- Inisialisasi Aplikasi Saat Pertama Kali Dimuat ---
-    
+    // --- Event Listeners ---
+    btnTambahKaryawan.addEventListener('click', tambahKaryawan);
+    formAbsensi.addEventListener('submit', catatAbsensi);
+    // BARU: Menambahkan event listener untuk tombol download
+    btnDownloadLaporan.addEventListener('click', downloadLaporan);
+
+    // --- Inisialisasi Aplikasi ---
     renderKaryawanDropdown();
     renderTabelAbsensi();
     renderRekapitulasi();
