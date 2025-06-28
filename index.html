@@ -8,15 +8,17 @@
 </head>
 <body>
 
-    <!-- BARU: Modal untuk menampilkan QR Code -->
-    <div id="modalQr" class="modal">
+    <!-- BARU: Modal untuk memilih karyawan SETELAH scan -->
+    <div id="modalPilihKaryawan" class="modal">
         <div class="modal-content">
-            <span class="close-button">×</span>
-            <h2>Kode QR Karyawan</h2>
-            <p>Berikan QR Code ini kepada masing-masing karyawan. Mereka bisa menyimpannya di ponsel atau mencetaknya.</p>
-            <div id="qrCodeContainer">
-                <!-- QR Code akan digenerate di sini oleh JavaScript -->
+            <span id="closePilihKaryawan" class="close-button">×</span>
+            <h2>Konfirmasi Absensi</h2>
+            <p>Pilih nama Anda untuk mencatat kehadiran.</p>
+            <div class="form-group">
+                <label for="pilihKaryawanModal">Nama Karyawan:</label>
+                <select id="pilihKaryawanModal" required></select>
             </div>
+            <button type="button" id="btnKonfirmasiAbsenModal">Konfirmasi Hadir</button>
         </div>
     </div>
     
@@ -24,15 +26,14 @@
         <h1>Absensi Karyawan Aeryn Salon</h1>
         <p>Aplikasi sederhana untuk mencatat kehadiran karyawan.</p>
 
-        <!-- BARU: Bagian Scan QR Code -->
+        <!-- Bagian Scan QR Code -->
         <div class="card">
             <h2>Absen Cepat dengan Kamera</h2>
             <div id="qr-scanner-section">
                 <button type="button" id="btnMulaiScan" class="btn-scan">
                     <img src="https://img.icons8.com/ios-filled/50/ffffff/qr-code.png" alt="qr icon" width="24">
-                    Scan QR Code untuk Absen
+                    Scan QR Code Absensi
                 </button>
-                <!-- Wadah untuk kamera scanner -->
                 <div id="qr-reader" class="hidden"></div>
                 <button type="button" id="btnBatalScan" class="btn-secondary hidden">Batal Scan</button>
             </div>
@@ -45,8 +46,8 @@
                 <input type="text" id="namaKaryawanBaru" placeholder="Masukkan nama karyawan baru">
                 <button type="button" id="btnTambahKaryawan">Tambah Karyawan</button>
             </div>
-             <!-- Tombol untuk melihat QR Code -->
-            <button type="button" id="btnLihatQr" class="btn-secondary">Lihat Kode QR Karyawan</button>
+             <!-- Tombol untuk melihat QR Code UMUM -->
+            <button type="button" id="btnLihatQrUmum" class="btn-secondary">Tampilkan QR Code Absensi</button>
         </div>
 
         <!-- Bagian Form Absensi Manual -->
@@ -55,9 +56,7 @@
             <form id="formAbsensi">
                 <div class="form-group">
                     <label for="pilihKaryawan">Pilih Karyawan:</label>
-                    <select id="pilihKaryawan" required>
-                        <option value="">-- Pilih Karyawan --</option>
-                    </select>
+                    <select id="pilihKaryawan" required></select>
                 </div>
                 <div class="form-group">
                     <label>Status Kehadiran:</label>
@@ -72,7 +71,7 @@
             </form>
         </div>
         
-        <!-- Bagian Rekapitulasi & Log -->
+        <!-- Rekapitulasi & Log -->
         <div class="card">
             <h2>Rekapitulasi Hari Ini</h2>
             <div id="rekapContainer"></div>
@@ -83,15 +82,12 @@
                 <button type="button" id="btnDownloadLaporan" class="btn-secondary">Download Laporan (CSV)</button>
             </div>
             <table id="tabelAbsensi">
-                <thead>
-                    <tr><th>Nama</th><th>Tanggal</th><th>Waktu</th><th>Status</th></tr>
-                </thead>
+                <thead><tr><th>Nama</th><th>Tanggal</th><th>Waktu</th><th>Status</th></tr></thead>
                 <tbody id="bodyTabelAbsensi"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- BARU: Link ke library QR Scanner -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="script.js"></script>
 </body>
