@@ -47,3 +47,53 @@
         margin-bottom: 20px;
     }
 }
+
+/* ... (kode CSS lama Anda di atas ini) ... */
+
+/* KODE BARU: Gaya untuk Layout Scan QR */
+.scan-container {
+    display: flex;
+    align-items: center; /* Vertikal center */
+    gap: 30px; /* Jarak antara gambar dan tombol */
+}
+
+.scan-illustration {
+    flex-basis: 40%; /* Lebar kolom gambar sekitar 40% */
+}
+
+.scan-illustration img {
+    width: 100%;
+    height: auto;
+    max-width: 250px; /* Batas maksimal lebar gambar */
+    display: block;
+    margin: 0 auto;
+}
+
+.scan-controls {
+    flex-basis: 60%; /* Lebar kolom tombol sekitar 60% */
+}
+
+.scan-controls p {
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    color: #6a1b9a;
+    opacity: 0.9;
+}
+
+.btn-scan {
+    /* Menghapus icon karena sudah ada ilustrasi */
+    font-size: 1.1rem;
+    gap: 0; 
+}
+
+/* KODE BARU: Penyesuaian layout scan untuk layar mobile */
+@media (max-width: 768px) {
+    .scan-container {
+        flex-direction: column; /* Ubah layout menjadi tumpukan (vertikal) */
+        text-align: center;
+    }
+
+    .scan-illustration {
+        margin-bottom: 20px;
+    }
+}
