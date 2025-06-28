@@ -39,16 +39,26 @@
             </div>
         </div>
 
-        <!-- Bagian Manajemen Karyawan -->
-        <div class="card">
-            <h2>Manajemen Karyawan</h2>
-            <div class="form-group">
-                <input type="text" id="namaKaryawanBaru" placeholder="Masukkan nama karyawan baru">
-                <button type="button" id="btnTambahKaryawan">Tambah Karyawan</button>
-            </div>
-             <!-- Tombol untuk melihat QR Code UMUM -->
-            <button type="button" id="btnLihatQrUmum" class="btn-secondary">Tampilkan QR Code Absensi</button>
-        </div>
+        <!-- KODE BARU -->
+<div class="card">
+    <h2>Manajemen Karyawan</h2>
+    <!-- Form Tambah Karyawan -->
+    <div class="form-group">
+        <input type="text" id="namaKaryawanBaru" placeholder="Masukkan nama karyawan baru">
+        <button type="button" id="btnTambahKaryawan">Tambah Karyawan</button>
+    </div>
+    
+    <hr class="divider"> <!-- Garis pemisah -->
+    
+    <!-- Daftar Karyawan yang Sudah Ada -->
+    <h3>Daftar Karyawan Aktif</h3>
+    <div id="daftarKaryawanContainer">
+        <!-- Daftar karyawan akan ditampilkan di sini oleh JavaScript -->
+    </div>
+    
+    <!-- Tombol untuk melihat QR Code UMUM -->
+    <button type="button" id="btnLihatQrUmum" class="btn-secondary">Tampilkan QR Code Absensi</button>
+</div>
 
         <!-- Bagian Form Absensi Manual -->
         <div class="card">
