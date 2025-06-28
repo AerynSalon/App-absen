@@ -89,3 +89,9 @@
     margin: 0 auto 10px;
     display: block;
 }
+
+/* Pastikan tombol di dalam modal baru memiliki lebar penuh */
+#btnKonfirmasiAbsenModal {
+    width: 100%;
+    margin-top: 10px;
+}
