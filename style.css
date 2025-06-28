@@ -95,3 +95,46 @@
     width: 100%;
     margin-top: 10px;
 }
+
+/* --- Tambahan untuk Fitur Hapus Karyawan --- */
+
+.divider {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
+
+#daftarKaryawanContainer {
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.karyawan-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #f0f0f0;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    background-color: #fafafa;
+}
+
+.karyawan-item span {
+    font-weight: 500;
+}
+
+.btn-hapus {
+    background-color: #dc3545; /* Merah */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-hapus:hover {
+    background-color: #c82333;
+}
