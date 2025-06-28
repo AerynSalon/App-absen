@@ -16,6 +16,36 @@ body {
     line-height: 1.7;
 }
 
+/* ... (kode CSS lama Anda di atas ini) ... */
+
+/* KODE BARU: Gaya untuk Logo Aplikasi */
+.app-logo {
+    position: fixed; /* atau 'absolute' jika tidak ingin tetap saat scroll */
+    top: 20px;
+    right: 30px;
+    width: 90px;  /* Sesuaikan ukuran jika perlu */
+    height: 90px;
+    border-radius: 50%; /* Membuat gambar menjadi lingkaran */
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    z-index: 100; /* Memastikan logo selalu di atas elemen lain */
+    transition: transform 0.3s ease;
+}
+
+.app-logo:hover {
+    transform: scale(1.1); /* Sedikit membesar saat disentuh mouse */
+}
+
+/* KODE BARU: Penyesuaian untuk layar mobile */
+@media (max-width: 768px) {
+    .app-logo {
+        width: 65px;
+        height: 65px;
+        top: 15px;
+        right: 15px;
+    }
+
+/* ... (sisa kode CSS Anda di bawah ini) ... */
 /* 2. Container & Header Utama */
 .container {
     max-width: 900px;
