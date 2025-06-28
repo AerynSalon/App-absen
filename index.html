@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplikasi Absensi Aeryn Salon</title>
+    <!-- Ganti link font jika ingin menggunakan yang lain -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- BARU: Modal untuk memilih karyawan SETELAH scan -->
+    <!-- Modal untuk memilih karyawan setelah scan -->
     <div id="modalPilihKaryawan" class="modal">
         <div class="modal-content">
             <span id="closePilihKaryawan" class="close-button">×</span>
@@ -18,20 +22,23 @@
                 <label for="pilihKaryawanModal">Nama Karyawan:</label>
                 <select id="pilihKaryawanModal" required></select>
             </div>
-            <button type="button" id="btnKonfirmasiAbsenModal">Konfirmasi Hadir</button>
+            <button type="button" id="btnKonfirmasiAbsenModal" class="btn-primary">Konfirmasi Hadir</button>
         </div>
     </div>
     
     <div class="container">
-        <h1>Absensi Karyawan Aeryn Salon</h1>
-        <p>Aplikasi sederhana untuk mencatat kehadiran karyawan.</p>
+        <!-- Struktur header yang lebih baik -->
+        <header class="app-header">
+            <h1>Absensi Karyawan Aeryn Salon</h1>
+            <p>Aplikasi absensi modern untuk manajemen karyawan yang lebih efisien.</p>
+        </header>
 
         <!-- Bagian Scan QR Code -->
         <div class="card">
             <h2>Absen Cepat dengan Kamera</h2>
             <div id="qr-scanner-section">
                 <button type="button" id="btnMulaiScan" class="btn-scan">
-                    <img src="https://img.icons8.com/ios-filled/50/ffffff/qr-code.png" alt="qr icon" width="24">
+                    <img src="https://img.icons8.com/material-outlined/48/ffffff/qr-code-scan.png" alt="qr icon" width="24"/>
                     Scan QR Code Absensi
                 </button>
                 <div id="qr-reader" class="hidden"></div>
@@ -39,26 +46,18 @@
             </div>
         </div>
 
-        <!-- KODE BARU -->
-<div class="card">
-    <h2>Manajemen Karyawan</h2>
-    <!-- Form Tambah Karyawan -->
-    <div class="form-group">
-        <input type="text" id="namaKaryawanBaru" placeholder="Masukkan nama karyawan baru">
-        <button type="button" id="btnTambahKaryawan">Tambah Karyawan</button>
-    </div>
-    
-    <hr class="divider"> <!-- Garis pemisah -->
-    
-    <!-- Daftar Karyawan yang Sudah Ada -->
-    <h3>Daftar Karyawan Aktif</h3>
-    <div id="daftarKaryawanContainer">
-        <!-- Daftar karyawan akan ditampilkan di sini oleh JavaScript -->
-    </div>
-    
-    <!-- Tombol untuk melihat QR Code UMUM -->
-    <button type="button" id="btnLihatQrUmum" class="btn-secondary">Tampilkan QR Code Absensi</button>
-</div>
+        <!-- Bagian Manajemen Karyawan -->
+        <div class="card">
+            <h2>Manajemen Karyawan</h2>
+            <div class="form-group">
+                <input type="text" id="namaKaryawanBaru" placeholder="cth: Andini Putri">
+                <button type="button" id="btnTambahKaryawan" class="btn-primary">Tambah Karyawan</button>
+            </div>
+            <hr class="divider">
+            <h3>Daftar Karyawan Aktif</h3>
+            <div id="daftarKaryawanContainer"></div>
+            <button type="button" id="btnLihatQrUmum" class="btn-secondary">Tampilkan QR Code Absensi</button>
+        </div>
 
         <!-- Bagian Form Absensi Manual -->
         <div class="card">
@@ -77,7 +76,7 @@
                         <label><input type="radio" name="status" value="Alpha"> Alpha</label>
                     </div>
                 </div>
-                <button type="submit">Catat Absensi</button>
+                <button type="submit" class="btn-primary">Catat Absensi</button>
             </form>
         </div>
         
@@ -89,7 +88,7 @@
         <div class="card">
             <div class="header-log">
                 <h2>Log Absensi</h2>
-                <button type="button" id="btnDownloadLaporan" class="btn-secondary">Download Laporan (CSV)</button>
+                <button type="button" id="btnDownloadLaporan" class="btn-secondary">Download Laporan (.xls)</button>
             </div>
             <table id="tabelAbsensi">
                 <thead><tr><th>Nama</th><th>Tanggal</th><th>Waktu</th><th>Status</th></tr></thead>
