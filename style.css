@@ -221,3 +221,44 @@ th {
 /* Rekapitulasi */
 #rekapContainer { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; }
 .rekap-item .count { font-size: 2rem; font-weight: 600; }
+
+/* --- Tambahan untuk Fitur Tombol Aksi --- */
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 kolom */
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-aksi {
+    padding: 15px;
+    font-size: 1rem;
+    color: white;
+    border: none;
+}
+
+.btn-masuk { background-color: #28a745; } /* Hijau */
+.btn-masuk:hover { background-color: #218838; }
+
+.btn-keluar { background-color: #ffc107; } /* Kuning */
+.btn-keluar:hover { background-color: #e0a800; }
+
+.btn-lembur-mulai { background-color: #17a2b8; } /* Biru muda */
+.btn-lembur-mulai:hover { background-color: #138496; }
+
+.btn-lembur-selesai { background-color: #fd7e14; } /* Oranye */
+.btn-lembur-selesai:hover { background-color: #e36d0a; }
+
+.btn-izin { background-color: #6c757d; } /* Abu-abu */
+.btn-izin:hover { background-color: #5a6268; }
+
+.btn-sakit { background-color: #dc3545; } /* Merah */
+.btn-sakit:hover { background-color: #c82333; }
+
+/* Menyesuaikan untuk 3 kolom di layar lebih besar */
+@media (min-width: 768px) {
+    #manualActionButtons {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
