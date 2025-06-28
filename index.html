@@ -11,11 +11,11 @@
 </head>
 <body>
 
+    <!-- KODE BARU: Menambahkan logo di sini -->
     <img src="logo.png" alt="Logo Aeryn Salon" class="app-logo">
 
     <!-- Modal untuk memilih karyawan setelah scan -->
     <div id="modalPilihKaryawan" class="modal">
-        <!-- ... (Isi modal tidak berubah) ... -->
         <div class="modal-content">
             <span id="closePilihKaryawan" class="close-button">×</span>
             <h2>Konfirmasi Absensi</h2>
@@ -39,31 +39,20 @@
             <p>Aplikasi absensi modern untuk manajemen waktu karyawan.</p>
         </header>
 
-        <!-- (PERUBAHAN DI SINI) Bagian Scan QR Code dengan Ilustrasi -->
-        <div class="card">
-            <h2>Absen Cepat dengan Kamera</h2>
-            <!-- KODE BARU: Wrapper untuk layout 2 kolom -->
-            <div class="scan-container">
-                <div class="scan-illustration">
-                    <img src="scan-illustration.png" alt="Ilustrasi Scan QR Code">
-                </div>
-                <div class="scan-controls">
-                    <p>Arahkan kamera ponsel Anda ke QR Code yang tersedia untuk melakukan absensi.</p>
-                    <div id="qr-scanner-section">
-                        <button type="button" id="btnMulaiScan" class="btn-scan">
-                            Mulai Scan
-                        </button>
-                        <div id="qr-reader" class="hidden"></div>
-                        <button type="button" id="btnBatalScan" class="btn-secondary hidden">Batal Scan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Sisa konten tidak berubah -->
         <div class="card">
+            <h2>Absen Cepat dengan Kamera</h2>
+            <div id="qr-scanner-section">
+                <button type="button" id="btnMulaiScan" class="btn-scan">
+                    <img src="https://img.icons8.com/material-outlined/48/ffffff/qr-code-scan.png" alt="qr icon" width="24"/>
+                    Scan QR Code Absensi
+                </button>
+                <div id="qr-reader" class="hidden"></div>
+                <button type="button" id="btnBatalScan" class="btn-secondary hidden">Batal Scan</button>
+            </div>
+        </div>
+        <div class="card">
             <h2>Manajemen Karyawan</h2>
-            <!-- ... (Isi tidak berubah) ... -->
             <div class="form-group">
                 <input type="text" id="namaKaryawanBaru" placeholder="cth: Andini Putri">
                 <button type="button" id="btnTambahKaryawan" class="btn-primary">Tambah Karyawan</button>
@@ -75,7 +64,6 @@
         </div>
         <div class="card">
             <h2>Pencatatan Manual</h2>
-            <!-- ... (Isi tidak berubah) ... -->
             <form id="formAbsensi">
                 <div class="form-group">
                     <label for="pilihKaryawan">Pilih Karyawan:</label>
