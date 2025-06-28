@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const bodyTabelAbsensi = document.getElementById('bodyTabelAbsensi');
     const rekapContainer = document.getElementById('rekapContainer');
     const btnDownloadLaporan = document.getElementById('btnDownloadLaporan');
-    
-    // BARU: Elemen untuk fitur QR
     const btnLihatQr = document.getElementById('btnLihatQr');
     const modalQr = document.getElementById('modalQr');
     const closeButton = document.querySelector('.close-button');
@@ -19,17 +17,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const qrReaderDiv = document.getElementById('qr-reader');
 
     // --- Inisialisasi Data ---
-    let karyawan = [
-        { id: 1672531200001, nama: 'Bunga Citra' },
-        { id: 1672531200002, nama: 'Dewi Lestari' },
-        { id: 1672531200003, nama: 'Sari Puspita' }
-    ];
+    // (PENYIMPANAN) Kunci unik untuk menyimpan data di localStorage
+    const KARYAWAN_STORAGE_KEY = 'aerynSalonKaryawan';
+    const ABSENSI_STORAGE_KEY = 'aerynSalonAbsensi';
+
+    let karyawan = [];
     let absensi = [];
-    let html5QrCodeScanner; // Variabel untuk menyimpan instance scanner
+    let html5QrCodeScanner;
+
+    // --- (PENYIMPANAN) Fungsi untuk menyimpan data ke localStorage ---
+    function saveData() {
+        // localStorage hanya bisa menyimpan string, jadi kita ubah array menjadi format JSON
+        localStorage.setItem(KARYAWAN_STORAGE_KEY, JSON.stringify(karyawan));
+        localStorage.setItem(ABSENSI_STORAGE_KEY, JSON.stringify(absensi));
+        console.log("Data berhasil disimpan ke localStorage.");
+    }
+
+    // --- (PENYIMPANAN) Fungsi untuk memuat data dari localStorage ---
+    function loadData() {
+        const karyawanData = localStorage.getItem(KARYAWAN_STORAGE_KEY);
+        const absensiData = localStorage.getItem(ABSENSI_STORAGE_KEY);
+
+        if (karyawanData) {
+            // Jika ada data, ubah kembali dari string JSON menjadi array
+            karyawan = JSON.parse(karyawanData);
+        } else {
+            // Jika tidak ada data (pertama kali buka), gunakan data default
+            karyawan = [
+                { id: 1672531200001, nama: 'Bunga Citra' },
+                { id: 1672531200002, nama: 'Dewi Lestari' },
+                { id: 1672531200003, nama: 'Sari Puspita' }
+            ];
+        }
+
+        if (absensiData) {
+            absensi = JSON.parse(absensiData);
+        } else {
+            absensi = [];
+        }
+        console.log("Data berhasil dimuat dari localStorage.");
+    }
 
     // --- Fungsi-Fungsi Aplikasi ---
 
-    // Fungsi yang sudah ada (tidak banyak berubah)
     function renderKaryawanDropdown() {
         pilihKaryawanSelect.innerHTML = '<option value="">-- Pilih Karyawan --</option>';
         karyawan.forEach(k => {
@@ -47,6 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
         karyawan.push(karyawanBaru);
         namaKaryawanBaruInput.value = '';
         renderKaryawanDropdown();
+        
+        // (PENYIMPANAN) Simpan data setelah ada perubahan
+        saveData(); 
+        
         alert(`Karyawan "${namaBaru}" berhasil ditambahkan!`);
     }
 
@@ -56,16 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
             bodyTabelAbsensi.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada data absensi.</td></tr>';
             return;
         }
-        // Urutkan absensi dari yang terbaru
         const absensiTerurut = absensi.slice().reverse();
         absensiTerurut.forEach(absen => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${absen.namaKaryawan}</td>
-                <td>${absen.tanggal}</td>
-                <td>${absen.waktu}</td>
-                <td class="status-${absen.status.toLowerCase()}">${absen.status}</td>
-            `;
+            tr.innerHTML = `<td>${absen.namaKaryawan}</td><td>${absen.tanggal}</td><td>${absen.waktu}</td><td class="status-${absen.status.toLowerCase()}">${absen.status}</td>`;
             bodyTabelAbsensi.appendChild(tr);
         });
     }
@@ -73,28 +101,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderRekapitulasi() {
         const rekap = { Hadir: 0, Izin: 0, Sakit: 0, Alpha: 0 };
         absensi.forEach(a => rekap[a.status]++);
-        rekapContainer.innerHTML = `
-            <div class="rekap-item"><div class="count status-hadir">${rekap.Hadir}</div><div>Hadir</div></div>
-            <div class="rekap-item"><div class="count status-izin">${rekap.Izin}</div><div>Izin</div></div>
-            <div class="rekap-item"><div class="count status-sakit">${rekap.Sakit}</div><div>Sakit</div></div>
-            <div class="rekap-item"><div class="count status-alpha">${rekap.Alpha}</div><div>Alpha</div></div>`;
+        rekapContainer.innerHTML = `<div class="rekap-item"><div class="count status-hadir">${rekap.Hadir}</div><div>Hadir</div></div><div class="rekap-item"><div class="count status-izin">${rekap.Izin}</div><div>Izin</div></div><div class="rekap-item"><div class="count status-sakit">${rekap.Sakit}</div><div>Sakit</div></div><div class="rekap-item"><div class="count status-alpha">${rekap.Alpha}</div><div>Alpha</div></div>`;
     }
 
     function catatAbsensi(karyawanId, status = 'Hadir') {
         const karyawanTerpilih = karyawan.find(k => k.id == karyawanId);
-        if (!karyawanTerpilih) {
-            alert('Error: Karyawan tidak ditemukan!');
-            return false;
-        }
-
-        // Cek apakah karyawan sudah absen hari ini
+        if (!karyawanTerpilih) { alert('Error: Karyawan tidak ditemukan!'); return false; }
         const hariIni = new Date().toLocaleDateString('id-ID');
         const sudahAbsen = absensi.find(a => a.idKaryawan == karyawanId && a.tanggal === hariIni);
-        if (sudahAbsen) {
-            alert(`${karyawanTerpilih.nama} sudah melakukan absensi hari ini.`);
-            return false;
-        }
-
+        if (sudahAbsen) { alert(`${karyawanTerpilih.nama} sudah melakukan absensi hari ini.`); return false; }
         const sekarang = new Date();
         const absenBaru = {
             idKaryawan: karyawanId,
@@ -104,12 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
             status: status
         };
         absensi.push(absenBaru);
+        
+        // (PENYIMPANAN) Simpan data setelah ada perubahan
+        saveData(); 
+        
         renderTabelAbsensi();
         renderRekapitulasi();
         return true;
     }
 
     function downloadLaporan() {
+        // ... (fungsi ini tidak berubah)
         if (absensi.length === 0) { alert('Tidak ada data absensi untuk diunduh.'); return; }
         const header = ["Nama Karyawan", "Tanggal", "Waktu", "Status"];
         const rows = absensi.map(absen => [absen.namaKaryawan, absen.tanggal, absen.waktu, absen.status].join(','));
@@ -125,22 +145,17 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(link);
     }
     
-    // --- BARU: Fungsi untuk Fitur QR Code ---
-
     function tampilkanModalQr() {
-        qrCodeContainer.innerHTML = ''; // Kosongkan container
+        // ... (fungsi ini tidak berubah)
+        qrCodeContainer.innerHTML = '';
         karyawan.forEach(k => {
             const qrItem = document.createElement('div');
             qrItem.className = 'qr-item';
-            
             const nama = document.createElement('b');
             nama.textContent = k.nama;
-            
             const qrImg = document.createElement('img');
-            // Kita gunakan API gratis untuk membuat QR code
             qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${k.id}`;
             qrImg.alt = `QR Code for ${k.nama}`;
-
             qrItem.appendChild(qrImg);
             qrItem.appendChild(nama);
             qrCodeContainer.appendChild(qrItem);
@@ -149,48 +164,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function onScanSuccess(decodedText, decodedResult) {
-        // Hentikan scanner setelah berhasil
         html5QrCodeScanner.clear().then(_ => {
             const berhasil = catatAbsensi(decodedText, 'Hadir');
             if (berhasil) {
                 const karyawanTerpilih = karyawan.find(k => k.id == decodedText);
                 alert(`Absensi untuk ${karyawanTerpilih.nama} berhasil dicatat!`);
             }
-            // Sembunyikan lagi UI scanner
             qrReaderDiv.classList.add('hidden');
             btnBatalScan.classList.add('hidden');
             btnMulaiScan.classList.remove('hidden');
-        }).catch(error => {
-            console.error("Gagal membersihkan scanner.", error);
-        });
+        }).catch(error => { console.error("Gagal membersihkan scanner.", error); });
     }
 
-    function onScanFailure(error) {
-        // Abaikan saja, fungsi ini akan terpanggil terus menerus jika tidak ada QR code
-    }
+    function onScanFailure(error) { /* Abaikan */ }
 
     function mulaiScan() {
-        // Tampilkan UI scanner
         btnMulaiScan.classList.add('hidden');
         qrReaderDiv.classList.remove('hidden');
         btnBatalScan.classList.remove('hidden');
-
-        // Inisialisasi scanner jika belum ada
         if (!html5QrCodeScanner) {
-            html5QrCodeScanner = new Html5QrcodeScanner(
-                "qr-reader", // ID div tempat kamera akan tampil
-                { fps: 10, qrbox: { width: 250, height: 250 } }, // Konfigurasi
-                /* verbose= */ false
-            );
+            html5QrCodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false);
         }
-        // Mulai rendering kamera dan scanner
         html5QrCodeScanner.render(onScanSuccess, onScanFailure);
     }
 
     function batalScan() {
-        html5QrCodeScanner.clear().catch(error => {
-            console.error("Gagal membersihkan scanner.", error);
-        });
+        html5QrCodeScanner.clear().catch(error => { console.error("Gagal membersihkan scanner.", error); });
         qrReaderDiv.classList.add('hidden');
         btnBatalScan.classList.add('hidden');
         btnMulaiScan.classList.remove('hidden');
@@ -207,21 +206,22 @@ document.addEventListener('DOMContentLoaded', () => {
         formAbsensi.reset();
     });
     btnDownloadLaporan.addEventListener('click', downloadLaporan);
-
-    // BARU: Event listener untuk fitur QR
     btnLihatQr.addEventListener('click', tampilkanModalQr);
     closeButton.addEventListener('click', () => modalQr.style.display = 'none');
     window.addEventListener('click', (event) => {
-        if (event.target == modalQr) {
-            modalQr.style.display = 'none';
-        }
+        if (event.target == modalQr) { modalQr.style.display = 'none'; }
     });
     btnMulaiScan.addEventListener('click', mulaiScan);
     btnBatalScan.addEventListener('click', batalScan);
 
-
     // --- Inisialisasi Aplikasi ---
-    renderKaryawanDropdown();
-    renderTabelAbsensi();
-    renderRekapitulasi();
+    function init() {
+        loadData(); // (PENYIMPANAN) Muat data terlebih dahulu
+        renderKaryawanDropdown();
+        renderTabelAbsensi();
+        renderRekapitulasi();
+    }
+    
+    init(); // Panggil fungsi inisialisasi utama
+
 });
