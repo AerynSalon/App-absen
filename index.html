@@ -11,6 +11,9 @@
 </head>
 <body>
 
+    <!-- KODE BARU: Menambahkan logo di sini -->
+    <img src="logo.png" alt="Logo Aeryn Salon" class="app-logo">
+
     <!-- Modal untuk memilih karyawan setelah scan -->
     <div id="modalPilihKaryawan" class="modal">
         <div class="modal-content">
@@ -21,7 +24,6 @@
                 <label for="pilihKaryawanModal">Nama Karyawan:</label>
                 <select id="pilihKaryawanModal" required></select>
             </div>
-            <!-- Tombol Aksi di Modal -->
             <div id="modalActionButtons" class="action-buttons">
                 <button data-action="Masuk" class="btn-aksi btn-masuk">Masuk</button>
                 <button data-action="Keluar" class="btn-aksi btn-keluar">Keluar</button>
@@ -37,7 +39,7 @@
             <p>Aplikasi absensi modern untuk manajemen waktu karyawan.</p>
         </header>
 
-        <!-- Bagian Scan QR Code -->
+        <!-- Sisa konten tidak berubah -->
         <div class="card">
             <h2>Absen Cepat dengan Kamera</h2>
             <div id="qr-scanner-section">
@@ -49,8 +51,6 @@
                 <button type="button" id="btnBatalScan" class="btn-secondary hidden">Batal Scan</button>
             </div>
         </div>
-
-        <!-- Bagian Manajemen Karyawan -->
         <div class="card">
             <h2>Manajemen Karyawan</h2>
             <div class="form-group">
@@ -62,8 +62,6 @@
             <div id="daftarKaryawanContainer"></div>
             <button type="button" id="btnLihatQrUmum" class="btn-secondary">Tampilkan QR Code Absensi</button>
         </div>
-
-        <!-- Bagian Form Absensi Manual -->
         <div class="card">
             <h2>Pencatatan Manual</h2>
             <form id="formAbsensi">
@@ -72,7 +70,6 @@
                     <select id="pilihKaryawan" required></select>
                 </div>
                 <label>Pilih Aksi:</label>
-                <!-- Tombol Aksi di Form Manual -->
                 <div id="manualActionButtons" class="action-buttons">
                     <button type="button" data-action="Masuk" class="btn-aksi btn-masuk">Masuk</button>
                     <button type="button" data-action="Keluar" class="btn-aksi btn-keluar">Keluar</button>
@@ -83,8 +80,6 @@
                 </div>
             </form>
         </div>
-        
-        <!-- Rekapitulasi & Log -->
         <div class="card">
             <h2>Rekapitulasi Hari Ini</h2>
             <div id="rekapContainer"></div>
