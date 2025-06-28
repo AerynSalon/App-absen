@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Inisialisasi Elemen DOM ---
-    // ... (semua elemen lama)
     const btnTambahKaryawan = document.getElementById('btnTambahKaryawan');
     const namaKaryawanBaruInput = document.getElementById('namaKaryawanBaru');
     const formAbsensi = document.getElementById('formAbsensi');
@@ -17,91 +16,58 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePilihKaryawan = document.getElementById('closePilihKaryawan');
     const pilihKaryawanModal = document.getElementById('pilihKaryawanModal');
     const btnKonfirmasiAbsenModal = document.getElementById('btnKonfirmasiAbsenModal');
-    
-    // BARU: Elemen untuk daftar karyawan
     const daftarKaryawanContainer = document.getElementById('daftarKaryawanContainer');
 
     // --- Inisialisasi Data & Variabel ---
-    // ... (tidak berubah)
     const KARYAWAN_STORAGE_KEY = 'aerynSalonKaryawan';
     const ABSENSI_STORAGE_KEY = 'aerynSalonAbsensi';
     const QR_CODE_CONTENT = "AERYN_SALON_ABSENSI";
-
     let karyawan = [];
     let absensi = [];
     let html5QrCodeScanner;
 
     // --- Fungsi Penyimpanan & Pemuatan Data ---
-    // ... (tidak berubah)
-    function saveData() { /* ... */ }
-    function loadData() { /* ... */ }
+    function saveData() {
+        localStorage.setItem(KARYAWAN_STORAGE_KEY, JSON.stringify(karyawan));
+        localStorage.setItem(ABSENSI_STORAGE_KEY, JSON.stringify(absensi));
+    }
 
-    // --- Fungsi-Fungsi Aplikasi ---
+    function loadData() {
+        const karyawanData = localStorage.getItem(KARYAWAN_STORAGE_KEY);
+        if (karyawanData) {
+            karyawan = JSON.parse(karyawanData);
+        } else {
+            karyawan = [{ id: 1672531200001, nama: 'Bunga Citra' }, { id: 1672531200002, nama: 'Dewi Lestari' }];
+        }
+        const absensiData = localStorage.getItem(ABSENSI_STORAGE_KEY);
+        absensi = absensiData ? JSON.parse(absensiData) : [];
+    }
 
-    // BARU: Fungsi untuk menampilkan daftar karyawan dengan tombol hapus
+    // --- Fungsi-Fungsi Render UI ---
     function renderDaftarKaryawan() {
-        daftarKaryawanContainer.innerHTML = ''; // Kosongkan daftar
+        daftarKaryawanContainer.innerHTML = '';
         if (karyawan.length === 0) {
-            daftarKaryawanContainer.innerHTML = '<p>Belum ada karyawan yang ditambahkan.</p>';
+            daftarKaryawanContainer.innerHTML = '<p>Belum ada karyawan.</p>';
             return;
         }
         karyawan.forEach(k => {
             const item = document.createElement('div');
             item.className = 'karyawan-item';
-            
-            const namaSpan = document.createElement('span');
-            namaSpan.textContent = k.nama;
-            
-            const hapusButton = document.createElement('button');
-            hapusButton.className = 'btn-hapus';
-            hapusButton.textContent = 'Hapus';
-            hapusButton.dataset.id = k.id; // Simpan ID di tombol untuk referensi
-            
-            item.appendChild(namaSpan);
-            item.appendChild(hapusButton);
+            item.innerHTML = `<span>${k.nama}</span><button class="btn-hapus" data-id="${k.id}">Hapus</button>`;
             daftarKaryawanContainer.appendChild(item);
         });
     }
 
-    // BARU: Fungsi untuk menghapus karyawan
-    function hapusKaryawan(event) {
-        // Cek apakah yang diklik adalah tombol hapus
-        if (event.target.classList.contains('btn-hapus')) {
-            const idToDelete = event.target.dataset.id;
-            const karyawanDihapus = karyawan.find(k => k.id == idToDelete);
-
-            if (karyawanDihapus && confirm(`Anda yakin ingin menghapus karyawan "${karyawanDihapus.nama}"?\nRiwayat absensi karyawan ini akan tetap ada.`)) {
-                // Filter array untuk membuat array baru tanpa karyawan yang dihapus
-                karyawan = karyawan.filter(k => k.id != idToDelete);
-
-                // Simpan perubahan dan update seluruh UI
-                saveData();
-                renderDaftarKaryawan();
-                renderKaryawanDropdowns(); // Penting untuk update dropdown!
-                alert(`Karyawan "${karyawanDihapus.nama}" berhasil dihapus.`);
-            }
-        }
+    function renderKaryawanDropdowns() {
+        pilihKaryawanSelect.innerHTML = '<option value="">-- Pilih Karyawan --</option>';
+        pilihKaryawanModal.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
+        karyawan.forEach(k => {
+            const option = `<option value="${k.id}">${k.nama}</option>`;
+            pilihKaryawanSelect.innerHTML += option;
+            pilihKaryawanModal.innerHTML += option;
+        });
     }
 
-    function renderKaryawanDropdowns() { /* ... */ }
-    function tambahKaryawan() {
-        const namaBaru = namaKaryawanBaruInput.value.trim();
-        if (namaBaru === '') { alert('Nama karyawan tidak boleh kosong!'); return; }
-        const karyawanBaru = { id: Date.now(), nama: namaBaru };
-        karyawan.push(karyawanBaru);
-        namaKaryawanBaruInput.value = '';
-        
-        renderKaryawanDropdowns();
-        renderDaftarKaryawan(); // Update daftar karyawan setelah menambah
-        
-        saveData();
-        alert(`Karyawan "${namaBaru}" berhasil ditambahkan!`);
-    }
-    
-    // ... Sisa fungsi (renderTabelAbsensi, renderRekapitulasi, catatAbsensi, dll.) TIDAK BERUBAH ...
-    // Salin dan tempel sisa fungsi dari script.js Anda sebelumnya ke sini.
-    // Di bawah ini adalah salinan lengkap agar tidak bingung.
-    
     function renderTabelAbsensi() {
         bodyTabelAbsensi.innerHTML = '';
         if (absensi.length === 0) {
@@ -115,11 +81,109 @@ document.addEventListener('DOMContentLoaded', () => {
             bodyTabelAbsensi.appendChild(tr);
         });
     }
-    
+
     function renderRekapitulasi() {
         const rekap = { Hadir: 0, Izin: 0, Sakit: 0, Alpha: 0 };
         absensi.forEach(a => rekap[a.status]++);
         rekapContainer.innerHTML = `<div class="rekap-item"><div class="count status-hadir">${rekap.Hadir}</div><div>Hadir</div></div><div class="rekap-item"><div class="count status-izin">${rekap.Izin}</div><div>Izin</div></div><div class="rekap-item"><div class="count status-sakit">${rekap.Sakit}</div><div>Sakit</div></div><div class="rekap-item"><div class="count status-alpha">${rekap.Alpha}</div><div>Alpha</div></div>`;
+    }
+    
+    // --- (PEMBARUAN) Fungsi Download Laporan menjadi Tabel Excel (.xls) ---
+    function downloadLaporanXLS() {
+        if (absensi.length === 0) {
+            alert('Tidak ada data absensi untuk diunduh.');
+            return;
+        }
+
+        // 1. Buat template HTML dengan gaya (CSS) untuk tabel
+        const styles = `
+            <style>
+                body { font-family: 'Arial', sans-serif; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+                th { background-color: #f2f2f2; font-weight: bold; }
+                tr:nth-child(even) { background-color: #f9f9f9; }
+            </style>
+        `;
+
+        // 2. Buat header tabel
+        const header = `
+            <tr>
+                <th>Nama Karyawan</th>
+                <th>Tanggal</th>
+                <th>Waktu</th>
+                <th>Status</th>
+            </tr>
+        `;
+
+        // 3. Buat baris-baris data dari array absensi
+        const rows = absensi.map(absen => `
+            <tr>
+                <td>${absen.namaKaryawan}</td>
+                <td>${absen.tanggal}</td>
+                <td>'${absen.waktu}</td> <!-- Tambahkan petik satu agar Excel tidak mengubah format waktu -->
+                <td>${absen.status}</td>
+            </tr>
+        `).join('');
+
+        // 4. Gabungkan semua bagian menjadi satu dokumen HTML
+        const tableHtml = `
+            <html>
+                <head>${styles}</head>
+                <body>
+                    <h2>Laporan Absensi Karyawan - Aeryn Salon</h2>
+                    <table>
+                        <thead>${header}</thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </body>
+            </html>
+        `;
+
+        // 5. Buat Blob dengan tipe yang dikenali Excel
+        const blob = new Blob([tableHtml], {
+            type: 'application/vnd.ms-excel;charset=utf-8'
+        });
+
+        // 6. Buat link dan picu download
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        
+        const tglHariIni = new Date().toISOString().slice(0, 10);
+        link.setAttribute("download", `laporan-absensi-aeryn-salon-${tglHariIni}.xls`); // Simpan sebagai .xls
+        
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    
+    // --- Fungsi Logika Inti ---
+    function tambahKaryawan() {
+        const namaBaru = namaKaryawanBaruInput.value.trim();
+        if (namaBaru === '') { alert('Nama karyawan tidak boleh kosong!'); return; }
+        const karyawanBaru = { id: Date.now(), nama: namaBaru };
+        karyawan.push(karyawanBaru);
+        namaKaryawanBaruInput.value = '';
+        saveData();
+        renderDaftarKaryawan();
+        renderKaryawanDropdowns();
+        alert(`Karyawan "${namaBaru}" berhasil ditambahkan!`);
+    }
+
+    function hapusKaryawan(event) {
+        if (event.target.classList.contains('btn-hapus')) {
+            const idToDelete = event.target.dataset.id;
+            const karyawanDihapus = karyawan.find(k => k.id == idToDelete);
+            if (karyawanDihapus && confirm(`Anda yakin ingin menghapus karyawan "${karyawanDihapus.nama}"?`)) {
+                karyawan = karyawan.filter(k => k.id != idToDelete);
+                saveData();
+                renderDaftarKaryawan();
+                renderKaryawanDropdowns();
+                alert(`Karyawan "${karyawanDihapus.nama}" berhasil dihapus.`);
+            }
+        }
     }
 
     function catatAbsensi(karyawanId, status = 'Hadir') {
@@ -136,98 +200,37 @@ document.addEventListener('DOMContentLoaded', () => {
         renderRekapitulasi();
         return true;
     }
-
-    function onScanSuccess(decodedText, decodedResult) {
-        if (decodedText === QR_CODE_CONTENT) {
-            html5QrCodeScanner.clear().then(_ => {
-                modalPilihKaryawan.style.display = 'block';
-                qrReaderDiv.classList.add('hidden');
-                btnBatalScan.classList.add('hidden');
-                btnMulaiScan.classList.remove('hidden');
-            }).catch(error => console.error("Gagal membersihkan scanner.", error));
-        } else { alert("QR Code tidak valid!"); }
-    }
-
-    function onScanFailure(error) { /* Abaikan */ }
-
-    function mulaiScan() {
-        btnMulaiScan.classList.add('hidden');
-        qrReaderDiv.classList.remove('hidden');
-        btnBatalScan.classList.remove('hidden');
-        if (!html5QrCodeScanner) {
-            html5QrCodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false);
-        }
-        html5QrCodeScanner.render(onScanSuccess, onScanFailure);
-    }
-
-    function batalScan() {
-        html5QrCodeScanner.clear().catch(error => console.error("Gagal membersihkan scanner.", error));
-        qrReaderDiv.classList.add('hidden');
-        btnBatalScan.classList.add('hidden');
-        btnMulaiScan.classList.remove('hidden');
-    }
-
-    function tampilkanQrUmum() {
-        window.open(`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${QR_CODE_CONTENT}`, '_blank');
-    }
+    
+    // ... Sisa fungsi untuk QR Code ...
+    function onScanSuccess(decodedText) { if (decodedText === QR_CODE_CONTENT) { html5QrCodeScanner.clear().then(() => { modalPilihKaryawan.style.display = 'block'; qrReaderDiv.classList.add('hidden'); btnBatalScan.classList.add('hidden'); btnMulaiScan.classList.remove('hidden'); }); } else { alert("QR Code tidak valid!"); } }
+    function onScanFailure(error) {}
+    function mulaiScan() { btnMulaiScan.classList.add('hidden'); qrReaderDiv.classList.remove('hidden'); btnBatalScan.classList.remove('hidden'); if (!html5QrCodeScanner) { html5QrCodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false); } html5QrCodeScanner.render(onScanSuccess, onScanFailure); }
+    function batalScan() { html5QrCodeScanner.clear().catch(err => {}); qrReaderDiv.classList.add('hidden'); btnBatalScan.classList.add('hidden'); btnMulaiScan.classList.remove('hidden'); }
+    function tampilkanQrUmum() { window.open(`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${QR_CODE_CONTENT}`, '_blank'); }
 
     // --- Event Listeners ---
-    // ... (event listener lama)
     btnTambahKaryawan.addEventListener('click', tambahKaryawan);
-    formAbsensi.addEventListener('submit', (e) => { /* ... */ });
+    daftarKaryawanContainer.addEventListener('click', hapusKaryawan);
+    formAbsensi.addEventListener('submit', (e) => { e.preventDefault(); const id = pilihKaryawanSelect.value; const status = document.querySelector('input[name="status"]:checked').value; if (!id) { alert('Silakan pilih karyawan!'); return; } if (catatAbsensi(id, status)) formAbsensi.reset(); });
+    
+    // (PEMBARUAN) Pastikan event listener ini memanggil fungsi yang benar
+    btnDownloadLaporan.addEventListener('click', downloadLaporanXLS);
+    
     btnMulaiScan.addEventListener('click', mulaiScan);
     btnBatalScan.addEventListener('click', batalScan);
     btnLihatQrUmum.addEventListener('click', tampilkanQrUmum);
-    btnKonfirmasiAbsenModal.addEventListener('click', () => { /* ... */ });
+    btnKonfirmasiAbsenModal.addEventListener('click', () => { const id = pilihKaryawanModal.value; if (!id) { alert('Anda harus memilih nama Anda!'); return; } if (catatAbsensi(id, 'Hadir')) { alert(`Absensi untuk ${karyawan.find(k=>k.id==id).nama} berhasil dicatat!`); modalPilihKaryawan.style.display = 'none'; } });
     closePilihKaryawan.addEventListener('click', () => modalPilihKaryawan.style.display = 'none');
     window.addEventListener('click', (event) => { if (event.target == modalPilihKaryawan) { modalPilihKaryawan.style.display = 'none'; } });
 
-    // BARU: Event listener untuk menghapus karyawan (menggunakan event delegation)
-    daftarKaryawanContainer.addEventListener('click', hapusKaryawan);
-    
     // --- Inisialisasi Aplikasi ---
     function init() {
         loadData();
+        renderDaftarKaryawan();
         renderKaryawanDropdowns();
-        renderDaftarKaryawan(); // Tampilkan daftar karyawan saat aplikasi dimuat
         renderTabelAbsensi();
         renderRekapitulasi();
     }
     
     init();
-
-    // Di sini saya akan menulis ulang fungsi yang tidak berubah agar lengkap
-    function saveData() { localStorage.setItem(KARYAWAN_STORAGE_KEY, JSON.stringify(karyawan)); localStorage.setItem(ABSENSI_STORAGE_KEY, JSON.stringify(absensi)); }
-    function loadData() {
-        const karyawanData = localStorage.getItem(KARYAWAN_STORAGE_KEY);
-        if (karyawanData) { karyawan = JSON.parse(karyawanData); } else { karyawan = [{ id: 1672531200001, nama: 'Bunga Citra' }, { id: 1672531200002, nama: 'Dewi Lestari' }, { id: 1672531200003, nama: 'Sari Puspita' }]; }
-        const absensiData = localStorage.getItem(ABSENSI_STORAGE_KEY);
-        absensi = absensiData ? JSON.parse(absensiData) : [];
-    }
-    function renderKaryawanDropdowns() {
-        pilihKaryawanSelect.innerHTML = '<option value="">-- Pilih Karyawan --</option>';
-        pilihKaryawanModal.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
-        karyawan.forEach(k => {
-            const option = document.createElement('option');
-            option.value = k.id;
-            option.textContent = k.nama;
-            pilihKaryawanSelect.appendChild(option.cloneNode(true));
-            pilihKaryawanModal.appendChild(option.cloneNode(true));
-        });
-    }
-    formAbsensi.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const karyawanId = pilihKaryawanSelect.value;
-        const status = document.querySelector('input[name="status"]:checked').value;
-        if (!karyawanId) { alert('Silakan pilih karyawan!'); return; }
-        if (catatAbsensi(karyawanId, status)) { formAbsensi.reset(); }
-    });
-    btnKonfirmasiAbsenModal.addEventListener('click', () => {
-        const karyawanId = pilihKaryawanModal.value;
-        if (!karyawanId) { alert('Anda harus memilih nama Anda!'); return; }
-        if (catatAbsensi(karyawanId, 'Hadir')) {
-            alert(`Absensi untuk ${karyawan.find(k=>k.id==karyawanId).nama} berhasil dicatat!`);
-            modalPilihKaryawan.style.display = 'none';
-        }
-    });
 });
