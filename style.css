@@ -1,296 +1,49 @@
-/* --- TAMPILAN MODERN AERYN SALON --- */
+/* ... (kode CSS lama Anda di atas ini) ... */
 
-/* 1. Reset Dasar & Pengaturan Global */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* KODE BARU: Gaya untuk Layout Scan QR */
+.scan-container {
+    display: flex;
+    align-items: center; /* Vertikal center */
+    gap: 30px; /* Jarak antara gambar dan tombol */
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    color: #4f4f4f;
-    /* Menggunakan gradient ungu muda yang lembut agar tidak monoton */
-    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-    background-attachment: fixed; /* Agar gradient tidak ikut scroll */
-    line-height: 1.7;
+.scan-illustration {
+    flex-basis: 40%; /* Lebar kolom gambar sekitar 40% */
 }
 
-/* 2. Container & Header Utama */
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
+.scan-illustration img {
+    width: 100%;
+    height: auto;
+    max-width: 250px; /* Batas maksimal lebar gambar */
+    display: block;
+    margin: 0 auto;
 }
 
-.app-header {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #4a148c; /* Ungu gelap untuk kontras */
+.scan-controls {
+    flex-basis: 60%; /* Lebar kolom tombol sekitar 60% */
 }
 
-.app-header h1 {
-    font-weight: 700;
-    font-size: 2.5rem;
-    letter-spacing: -1px;
-}
-
-.app-header p {
-    font-size: 1.1rem;
+.scan-controls p {
+    margin-bottom: 20px;
+    font-size: 0.95rem;
     color: #6a1b9a;
     opacity: 0.9;
 }
 
-/* 3. Gaya Kartu (Card) dengan Efek "Glassmorphism" */
-.card {
-    /* Efek 'frosted glass' yang modern */
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); /* Untuk Safari */
-    
-    border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px); /* Efek 'terangkat' saat di-hover */
-}
-
-h2 {
-    color: #4a148c;
-    font-weight: 600;
-    margin-bottom: 20px;
-    border-bottom: 2px solid rgba(126, 87, 194, 0.2);
-    padding-bottom: 10px;
-}
-
-/* 4. Tombol (Buttons) */
-button {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%; /* Default lebar penuh, bisa di-override */
-}
-
-.btn-primary {
-    background-color: #7e57c2; /* Ungu medium */
-    color: white;
-}
-.btn-primary:hover {
-    background-color: #673ab7; /* Ungu lebih gelap */
-    box-shadow: 0 4px 15px rgba(126, 87, 194, 0.4);
-    transform: translateY(-2px); /* Memberi 'nyawa' pada tombol saat disentuh */
-}
-
 .btn-scan {
-    background: linear-gradient(45deg, #66bb6a, #43a047);
-    color: white;
+    /* Menghapus icon karena sudah ada ilustrasi */
     font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-.btn-scan:hover {
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-    transform: translateY(-2px);
+    gap: 0; 
 }
 
-.btn-secondary {
-    background-color: #f1f3f5;
-    color: #5e35b1;
-    width: auto; /* Lebar otomatis untuk tombol sekunder */
-}
-.btn-secondary:hover {
-    background-color: #e9ecef;
-}
-
-.btn-hapus {
-    background-color: #ef9a9a;
-    color: #c62828;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    width: auto;
-}
-.btn-hapus:hover {
-    background-color: #e57373;
-    color: white;
-}
-
-/* 5. Form & Input */
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #6a1b9a;
-}
-
-input[type="text"], select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    background-color: rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease;
-}
-
-input[type="text"]:focus, select:focus {
-    outline: none;
-    border-color: #7e57c2;
-    background-color: #fff;
-    box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.2);
-}
-
-/* 6. Tabel & Lain-lain */
-.header-log {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.header-log h2 { border: none; padding: 0; }
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-th, td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid rgba(126, 87, 194, 0.1);
-}
-thead {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-th {
-    font-weight: 600;
-    color: #5e35b1;
-}
-
-/* Status Kehadiran */
-.status-hadir { color: #2e7d32; font-weight: bold; }
-.status-izin { color: #0277bd; font-weight: bold; }
-.status-sakit { color: #f9a825; font-weight: bold; }
-.status-alpha { color: #d84315; font-weight: bold; }
-
-/* Modal */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
-.modal-content { 
-    margin: 15% auto;
-    width: 90%;
-    max-width: 500px;
-    /* Menggunakan gaya kartu yang sama untuk konsistensi */
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-radius: 16px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-    position: relative;
-}
-
-.close-button {
-    color: #aaa;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Daftar Karyawan */
-.divider { border: none; border-top: 1px solid rgba(0,0,0,0.1); margin: 25px 0; }
-.karyawan-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 8px; margin-bottom: 8px; background-color: rgba(255, 255, 255, 0.6); }
-
-/* Rekapitulasi */
-#rekapContainer { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; }
-.rekap-item .count { font-size: 2rem; font-weight: 600; }
-
-/* --- Tambahan untuk Fitur Tombol Aksi --- */
-
-.action-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 kolom */
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.btn-aksi {
-    padding: 15px;
-    font-size: 1rem;
-    color: white;
-    border: none;
-}
-
-.btn-masuk { background-color: #28a745; } /* Hijau */
-.btn-masuk:hover { background-color: #218838; }
-
-.btn-keluar { background-color: #ffc107; } /* Kuning */
-.btn-keluar:hover { background-color: #e0a800; }
-
-.btn-lembur-mulai { background-color: #17a2b8; } /* Biru muda */
-.btn-lembur-mulai:hover { background-color: #138496; }
-
-.btn-lembur-selesai { background-color: #fd7e14; } /* Oranye */
-.btn-lembur-selesai:hover { background-color: #e36d0a; }
-
-.btn-izin { background-color: #6c757d; } /* Abu-abu */
-.btn-izin:hover { background-color: #5a6268; }
-
-.btn-sakit { background-color: #dc3545; } /* Merah */
-.btn-sakit:hover { background-color: #c82333; }
-
-/* Menyesuaikan untuk 3 kolom di layar lebih besar */
-@media (min-width: 768px) {
-    #manualActionButtons {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-/* ... (kode CSS lama Anda di atas ini) ... */
-
-/* KODE BARU: Gaya untuk Logo Aplikasi */
-.app-logo {
-    position: fixed; /* atau 'absolute' jika tidak ingin tetap saat scroll */
-    top: 20px;
-    right: 30px;
-    width: 90px;  /* Sesuaikan ukuran jika perlu */
-    height: 90px;
-    border-radius: 50%; /* Membuat gambar menjadi lingkaran */
-    border: 3px solid white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    z-index: 100; /* Memastikan logo selalu di atas elemen lain */
-    transition: transform 0.3s ease;
-}
-
-.app-logo:hover {
-    transform: scale(1.1); /* Sedikit membesar saat disentuh mouse */
-}
-
-/* KODE BARU: Penyesuaian untuk layar mobile */
+/* KODE BARU: Penyesuaian layout scan untuk layar mobile */
 @media (max-width: 768px) {
-    .app-logo {
-        width: 65px;
-        height: 65px;
-        top: 15px;
-        right: 15px;
+    .scan-container {
+        flex-direction: column; /* Ubah layout menjadi tumpukan (vertikal) */
+        text-align: center;
+    }
+
+    .scan-illustration {
+        margin-bottom: 20px;
     }
 }
-
-/* ... (sisa kode CSS Anda di bawah ini) ... */
