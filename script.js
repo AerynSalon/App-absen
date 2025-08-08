@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (absensi.length === 0) { alert('Tidak ada data untuk diunduh.'); return; }
         const styles = `<style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ddd; padding: 8px; } th { background-color: #f2f2f2; }</style>`;
         const header = `<tr><th>Nama Karyawan</th><th>Tanggal</th><th>Waktu</th><th>Aksi</th></tr>`;
-        const rows = absensi.map(absen => `<tr><td>${absen.namaKaryawan}</td><td>${absen.tanggal}</td><td>'${absen.waktu}</td><td>${absen.tipe_aksi}</td></tr>`).join('');
+        const rows = absensi.map(absen => `<tr><td>${absen.namaKaryawan}</td><td>${absen.tanggal}</td><td>${absen.waktu}</td><td>${absen.tipe_aksi}</td></tr>`).join('');
         const tableHtml = `<html><head>${styles}</head><body><h2>Laporan Aktivitas Karyawan</h2><table><thead>${header}</thead><tbody>${rows}</tbody></table></body></html>`;
         const blob = new Blob([tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
         const link = document.createElement("a");
@@ -142,15 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Sisa fungsi (Manajemen Karyawan, QR Scan, dll) ---
-    function renderDaftarKaryawan() { /* ... tidak berubah ... */ }
-    function renderKaryawanDropdowns() { /* ... tidak berubah ... */ }
-    function tambahKaryawan() { /* ... tidak berubah ... */ }
-    function hapusKaryawan(event) { /* ... tidak berubah ... */ }
-    function onScanSuccess(decodedText) { /* ... tidak berubah ... */ }
-    function onScanFailure(error) { /* ... tidak berubah ... */ }
-    function mulaiScan() { /* ... tidak berubah ... */ }
-    function batalScan() { /* ... tidak berubah ... */ }
-    function tampilkanQrUmum() { /* ... tidak berubah ... */ }
+    // Implementasi fungsi-fungsi tersebut berada di bagian akhir berkas ini.
     
     // --- Event Listeners (dengan perubahan) ---
     btnTambahKaryawan.addEventListener('click', tambahKaryawan);
