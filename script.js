@@ -3,7 +3,7 @@ function simpanAbsen() {
   const jamMasuk = document.getElementById("jamMasuk").value;
   const jamKeluar = document.getElementById("jamKeluar").value;
 
-  fetch("PASTE_URL_APPS_SCRIPT_HERE", {
+  fetch("https://script.google.com/macros/s/AKfycbzPBv3Lo7wSjdy41jdMuYwS1u-UG_BX0LfcPlGBa_lNUQAKJKSEOASIM7cExt3ZOD3b/exec", {
     method: "POST",
     body: JSON.stringify({
       nama: nama,
