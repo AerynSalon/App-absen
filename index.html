@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Absensi Aeryn Salon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- KODE BARU: Menambahkan logo di sini -->
+    <img src="logo.png" alt="Logo Aeryn Salon" class="app-logo">
+
+    <!-- Modal untuk memilih karyawan setelah scan -->
+    <div id="modalPilihKaryawan" class="modal">
+        <div class="modal-content">
+            <span id="closePilihKaryawan" class="close-button">×</span>
+            <h2>Konfirmasi Absensi</h2>
+            <p>Pilih nama Anda, lalu pilih aksi yang ingin dilakukan.</p>
+            <div class="form-group">
+                <label for="pilihKaryawanModal">Nama Karyawan:</label>
+                <select id="pilihKaryawanModal" required></select>
+            </div>
+            <div id="modalActionButtons" class="action-buttons">
+                <button data-action="Masuk" class="btn-aksi btn-masuk">Masuk</button>
+                <button data-action="Keluar" class="btn-aksi btn-keluar">Keluar</button>
+                <button data-action="Mulai Lembur" class="btn-aksi btn-lembur-mulai">Mulai Lembur</button>
+                <button data-action="Selesai Lembur" class="btn-aksi btn-lembur-selesai">Selesai Lembur</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header class="app-header">
+            <h1>Absensi Karyawan Aeryn Salon</h1>
+            <p>Aplikasi absensi modern untuk manajemen waktu karyawan.</p>
+        </header>
+
+        <!-- Sisa konten tidak berubah -->
+        <div class="card">
+            <h2>Absen Cepat dengan Kamera</h2>
+            <div id="qr-scanner-section">
+                <button type="button" id="btnMulaiScan" class="btn-scan">
+                    <img src="Please-scan.jpg" alt="Scan QR Code" class="scan-icon" style="width:48px; height:48px; object-fit:contain; margin-right:8px;">
+                    Scan QR Code Absensi
+                </button>
+                <div id="qr-reader" class="hidden"></div>
+                <button type="button" id="btnBatalScan" class="btn-secondary hidden">Batal Scan</button>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Manajemen Karyawan</h2>
+            <div class="form-group">
+                <input type="text" id="namaKaryawanBaru" placeholder="cth: Andini Putri">
+                <button type="button" id="btnTambahKaryawan" class="btn-primary">Tambah Karyawan</button>
+            </div>
+            <hr class="divider">
+            <h3>Daftar Karyawan Aktif</h3>
+            <div id="daftarKaryawanContainer"></div>
+            <button type="button" id="btnLihatQrUmum" class="btn-secondary">Tampilkan QR Code Absensi</button>
+        </div>
+        <div class="card">
+            <h2>Pencatatan Manual</h2>
+            <form id="formAbsensi">
+                <div class="form-group">
+                    <label for="pilihKaryawan">Pilih Karyawan:</label>
+                    <select id="pilihKaryawan" required></select>
+                </div>
+                <label>Pilih Aksi:</label>
+                <div id="manualActionButtons" class="action-buttons">
+                    <button type="button" data-action="Masuk" class="btn-aksi btn-masuk">Masuk</button>
+                    <button type="button" data-action="Keluar" class="btn-aksi btn-keluar">Keluar</button>
+                    <button type="button" data-action="Mulai Lembur" class="btn-aksi btn-lembur-mulai">Mulai Lembur</button>
+                    <button type="button" data-action="Selesai Lembur" class="btn-aksi btn-lembur-selesai">Selesai Lembur</button>
+                    <button type="button" data-action="Izin" class="btn-aksi btn-izin">Izin</button>
+                    <button type="button" data-action="Sakit" class="btn-aksi btn-sakit">Sakit</button>
+                </div>
+            </form>
+        </div>
+        <div class="card">
+            <h2>Rekapitulasi Hari Ini</h2>
+            <div id="rekapContainer"></div>
+        </div>
+        <div class="card">
+            <div class="header-log">
+                <h2>Log Aktivitas</h2>
+                <button type="button" id="btnDownloadLaporan" class="btn-secondary">Download Laporan (.xls)</button>
+            </div>
+            <table id="tabelAbsensi">
+                <thead><tr><th>Nama</th><th>Tanggal</th><th>Waktu</th><th>Aksi</th></tr></thead>
+                <tbody id="bodyTabelAbsensi"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="script.js"></script>
+</body>
+</html>
